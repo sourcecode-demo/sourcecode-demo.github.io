@@ -3,7 +3,7 @@
 A proof-of-concept demonstration UI showcasing an end-to-end insurance underwriting journey for Chubb presentation.
 
 ## Overview
-
+ 
 This demo presents a complete underwriting workflow from submission to distribution insights:
 
 1. **Submission Intake** - Document upload and validation
