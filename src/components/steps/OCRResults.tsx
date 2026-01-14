@@ -1,14 +1,18 @@
-import { ArrowRight, ArrowLeft, User, Phone, Shield, Users, Heart, CheckCircle2, Sparkles } from 'lucide-react';
-import { mockOCRResults } from '../../data/mockData';
+import { ArrowRight, ArrowLeft, User, Phone, Shield, Users, Heart, CheckCircle2, Sparkles, AlertTriangle } from 'lucide-react';
+import { mockOCRResults, mockUnhappyOCRResults } from '../../data/mockData';
+import Tooltip from '../Tooltip';
 
 interface OCRResultsProps {
   onNext: () => void;
   onPrevious: () => void;
   isProcessing: boolean;
   processingStage: string;
+  isUnhappyCase?: boolean;
 }
 
-const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRResultsProps) => {
+const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhappyCase = false }: OCRResultsProps) => {
+  const ocrData = isUnhappyCase ? mockUnhappyOCRResults : mockOCRResults;
+  
   return (
     <div className="p-8 relative">
       {/* Header */}
@@ -22,13 +26,51 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
               Data extracted and validated from application documents
             </p>
           </div>
-          <div className="flex items-center space-x-2 bg-green-100 px-4 py-2 rounded-full">
-            <Sparkles className="w-5 h-5 text-green-600" />
-            <span className="font-semibold text-green-700">
-              {mockOCRResults.confidence}% Confidence
-            </span>
+          <div className="flex items-center space-x-4">
+            {/* Case Type Indicator */}
+            <div className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
+              isUnhappyCase ? 'bg-red-100' : 'bg-green-100'
+            }`}>
+              {isUnhappyCase ? (
+                <>
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                  <span className="font-semibold text-red-700">Unhappy Case</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold text-green-700">Happy Case</span>
+                </>
+              )}
+            </div>
+            
+            {/* Confidence Score with Tooltip */}
+            <Tooltip content={ocrData.confidenceExplanation}>
+              <div className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
+                isUnhappyCase ? 'bg-yellow-100' : 'bg-green-100'
+              }`}>
+                <Sparkles className={`w-5 h-5 ${isUnhappyCase ? 'text-yellow-600' : 'text-green-600'}`} />
+                <span className={`font-semibold ${isUnhappyCase ? 'text-yellow-700' : 'text-green-700'}`}>
+                  {ocrData.confidence}% Confidence
+                </span>
+              </div>
+            </Tooltip>
           </div>
         </div>
+        
+        {/* Unhappy Case Warning Banner */}
+        {isUnhappyCase && (
+          <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start space-x-3">
+            <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <h4 className="font-semibold text-red-800">Unhappy Case Demo</h4>
+              <p className="text-sm text-red-600">
+                This demonstrates how the system handles cases that may not meet underwriting criteria. 
+                The applicant has multiple risk factors that will be evaluated in the underwriting step.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Personal Information */}
@@ -40,12 +82,12 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-4 bg-gray-50 rounded-lg p-6 border border-gray-200">
-          {Object.entries(mockOCRResults.personalInfo).map(([key, value]) => (
+          {Object.entries(ocrData.personalInfo).map(([key, value]) => (
             <div key={key} className="bg-white rounded-lg p-4">
               <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">
                 {key.replace(/([A-Z])/g, ' $1').trim()}
               </p>
-              <p className="text-sm font-semibold text-gray-900">{value}</p>
+              <p className="text-sm font-semibold text-gray-900">{String(value)}</p>
               <div className="mt-2 flex items-center space-x-1">
                 <CheckCircle2 className="w-3 h-3 text-green-500" />
                 <span className="text-xs text-green-600">Verified</span>
@@ -64,7 +106,7 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
           </h3>
         </div>
         <div className="grid grid-cols-1 gap-4 bg-gray-50 rounded-lg p-6 border border-gray-200">
-          {Object.entries(mockOCRResults.contactInfo).map(([key, value]) => (
+          {Object.entries(ocrData.contactInfo).map(([key, value]) => (
             <div key={key} className="bg-white rounded-lg p-4">
               <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">
                 {key.replace(/([A-Z])/g, ' $1').trim()}
@@ -88,7 +130,7 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-4 bg-blue-50 rounded-lg p-6 border border-blue-200">
-          {Object.entries(mockOCRResults.policyDetails).map(([key, value]) => (
+          {Object.entries(ocrData.policyDetails).map(([key, value]) => (
             <div key={key} className="bg-white rounded-lg p-4">
               <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">
                 {key.replace(/([A-Z])/g, ' $1').trim()}
@@ -108,18 +150,26 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
         <div className="flex items-center space-x-2 mb-4">
           <Users className="w-5 h-5 text-blue-600" />
           <h3 className="text-lg font-semibold text-gray-900">Beneficiaries</h3>
+          <Tooltip content={ocrData.beneficiaryShareExplanation} showIcon={true}>
+            <span></span>
+          </Tooltip>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          {mockOCRResults.beneficiaries.map((beneficiary, index) => (
+          {ocrData.beneficiaries.map((beneficiary, index) => (
             <div
               key={index}
               className="bg-gray-50 rounded-lg p-6 border border-gray-200"
             >
               <div className="flex items-center justify-between mb-3">
                 <p className="font-semibold text-gray-900">{beneficiary.name}</p>
-                <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium">
-                  {beneficiary.share}
-                </span>
+                <Tooltip 
+                  content={`This beneficiary receives ${beneficiary.share} of the policy benefits as designated by the applicant.`}
+                  showIcon={false}
+                >
+                  <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium cursor-help">
+                    {beneficiary.share}
+                  </span>
+                </Tooltip>
               </div>
               <p className="text-sm text-gray-600">{beneficiary.relationship}</p>
             </div>
@@ -135,17 +185,36 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage }: OCRRe
             Health Declaration
           </h3>
         </div>
-        <div className="grid grid-cols-2 gap-4 bg-green-50 rounded-lg p-6 border border-green-200">
-          {Object.entries(mockOCRResults.healthDeclaration).map(
+        <div className={`grid grid-cols-2 gap-4 rounded-lg p-6 border ${
+          isUnhappyCase 
+            ? 'bg-red-50 border-red-200' 
+            : 'bg-green-50 border-green-200'
+        }`}>
+          {Object.entries(ocrData.healthDeclaration).map(
             ([key, value]) => (
               <div key={key} className="bg-white rounded-lg p-4">
                 <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">
                   {key.replace(/([A-Z])/g, ' $1').trim()}
                 </p>
-                <p className="text-sm font-semibold text-gray-900">{value}</p>
+                <p className={`text-sm font-semibold ${
+                  isUnhappyCase && value !== 'None' && !value.includes('None') 
+                    ? 'text-red-700' 
+                    : 'text-gray-900'
+                }`}>
+                  {value}
+                </p>
                 <div className="mt-2 flex items-center space-x-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-500" />
-                  <span className="text-xs text-green-600">Verified</span>
+                  {isUnhappyCase && value !== 'None' && !value.includes('None') ? (
+                    <>
+                      <AlertTriangle className="w-3 h-3 text-amber-500" />
+                      <span className="text-xs text-amber-600">Flagged for Review</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-3 h-3 text-green-500" />
+                      <span className="text-xs text-green-600">Verified</span>
+                    </>
+                  )}
                 </div>
               </div>
             )

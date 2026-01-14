@@ -19,10 +19,11 @@ const StepIndicator = ({ steps, currentStep, onStepClick }: StepIndicatorProps) 
         <div key={step.id} className="flex items-center flex-1">
           {/* Step Circle */}
           <button
-            onClick={() => onStepClick(step.id)}
-            className={`flex flex-col items-center group cursor-pointer transition-all ${
+            onClick={() => step.id <= currentStep && onStepClick(step.id)}
+            disabled={step.id > currentStep}
+            className={`flex flex-col items-center group transition-all ${
               index === 0 ? '' : 'flex-1'
-            }`}
+            } ${step.id > currentStep ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
             <div className="flex items-center mb-2">
               <div

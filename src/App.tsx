@@ -7,14 +7,16 @@ import UnderwritingDecision from './components/steps/UnderwritingDecision';
 import AuditTrail from './components/steps/AuditTrail';
 import Analytics from './components/steps/Analytics';
 import DistributionInsights from './components/steps/DistributionInsights';
+import Dashboard from './components/Dashboard';
+import { LayoutDashboard } from 'lucide-react';
 
 const steps = [
   { id: 1, name: 'Submission Intake', description: 'Document Upload' },
   { id: 2, name: 'OCR Processing', description: 'Data Extraction' },
   { id: 3, name: 'Underwriting', description: 'Risk Assessment' },
   { id: 4, name: 'Audit Trail', description: 'Process History' },
-  { id: 5, name: 'Analytics', description: 'Business Insights' },
-  { id: 6, name: 'Distribution', description: 'Channel Performance' }
+  { id: 5, name: 'Analytics', description: 'Case Insights' },
+  { id: 6, name: 'Distribution', description: 'Case Distribution' }
 ];
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState('');
   const [filesUploaded, setFilesUploaded] = useState(false);
+  const [isUnhappyCase, setIsUnhappyCase] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
 
   const handleNext = () => {
     if (currentStep < steps.length) {
@@ -79,6 +83,18 @@ function App() {
     setCurrentStep(stepId);
   };
 
+  const handleToggleCase = (unhappy: boolean) => {
+    setIsUnhappyCase(unhappy);
+  };
+
+  const handleRestart = () => {
+    setCurrentStep(1);
+    setFilesUploaded(false);
+    setIsUnhappyCase(false);
+    setIsProcessing(false);
+    setProcessingStage('');
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -89,6 +105,8 @@ function App() {
             processingStage={processingStage}
             filesUploaded={filesUploaded}
             setFilesUploaded={setFilesUploaded}
+            isUnhappyCase={isUnhappyCase}
+            onToggleCase={handleToggleCase}
           />
         );
       case 2:
@@ -98,6 +116,7 @@ function App() {
             onPrevious={handlePrevious} 
             isProcessing={isProcessing}
             processingStage={processingStage}
+            isUnhappyCase={isUnhappyCase}
           />
         );
       case 3:
@@ -107,6 +126,7 @@ function App() {
             onPrevious={handlePrevious} 
             isProcessing={isProcessing}
             processingStage={processingStage}
+            isUnhappyCase={isUnhappyCase}
           />
         );
       case 4:
@@ -114,7 +134,7 @@ function App() {
       case 5:
         return <Analytics onNext={handleNext} onPrevious={handlePrevious} isProcessing={isProcessing} />;
       case 6:
-        return <DistributionInsights onPrevious={handlePrevious} />;
+        return <DistributionInsights onPrevious={handlePrevious} onRestart={handleRestart} />;
       default:
         return null;
     }
@@ -128,21 +148,22 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">C</span>
+                <span className="text-white font-bold text-xl">IU</span>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Chubb Insurance</h1>
-                <p className="text-sm text-gray-500">Intelligent Underwriting Platform</p>
+                <h1 className="text-2xl font-bold text-gray-900">Intelligent Underwriting</h1>
+                <p className="text-sm text-gray-500">AI-Powered Insurance Platform</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-gray-700">Case ID: 53016828</p>
-                <p className="text-xs text-gray-500">DELA CRUZ, MIA</p>
-              </div>
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-blue-700 font-semibold text-sm">DC</span>
-              </div>
+              {/* Dashboard Button */}
+              <button
+                onClick={() => setShowDashboard(true)}
+                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all shadow-md hover:shadow-lg"
+              >
+                <LayoutDashboard className="w-5 h-5" />
+                <span>Dashboard</span>
+              </button>
             </div>
           </div>
         </div>
@@ -172,6 +193,11 @@ function App() {
           </p>
         </div>
       </footer>
+
+      {/* Dashboard Modal */}
+      {showDashboard && (
+        <Dashboard onClose={() => setShowDashboard(false)} />
+      )}
     </div>
   );
 }
