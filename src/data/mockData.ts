@@ -119,7 +119,8 @@ export const mockOCRResults = {
     familyHistory: "Father has hypertension (controlled)"
   },
   confidence: 98.5,
-  confidenceExplanation: "Confidence score is calculated based on: text recognition accuracy (99.2%), field validation success rate (98.1%), data consistency checks (98.2%), and document quality assessment (98.5%). A score above 95% indicates high confidence in extracted data accuracy.",
+  confidenceExplanation: "This score represents the system's certainty in the extracted data. It is calculated by an ensemble of local Vision-Language Models (VLMs) and traditional OCR engines. The AI evaluates text recognition (99.2%), validates field formats (98.1%), checks cross-document consistency (98.2%), and assesses image quality (98.5%). A score >95% allows for automated straight-through processing without human intervention.",
+  aiFlowMathTooltip: "The AI Flow utilizes a hybrid approach: 1) Document Classification to identify forms, 2) Multi-modal Extraction (Vision + Text) using Qwen2.5-VL to capture layout and semantics, and 3) Deterministic Validation against business rules. The 'Confidence Math' follows a weighted formula: 45% Evidence Quality + 25% Model Agreement + 20% Constraint Satisfaction + 10% Cross-document Consistency, ensuring reliable and auditable results.",
   beneficiaryShareExplanation: "Beneficiary shares are distributed equally between the two designated beneficiaries. Each beneficiary (Spouse and Child) receives 50% of the policy benefits. This is the applicant's specified preference as indicated in the application form."
 };
 
@@ -162,7 +163,8 @@ export const mockUnhappyOCRResults = {
     familyHistory: "Father died of heart disease at 55"
   },
   confidence: 97.2,
-  confidenceExplanation: "Confidence score is calculated based on: text recognition accuracy (98.5%), field validation success rate (96.8%), data consistency checks (96.5%), and document quality assessment (97.0%). A score above 95% indicates high confidence in extracted data accuracy.",
+  confidenceExplanation: "While the overall confidence remains high (97.2%), the system detected complex medical disclosures that require underwriting review. The extraction logic cross-referenced the medical terms with ICD-10 codes locally to ensure accurate classification for the subsequent risk assessment step.",
+  aiFlowMathTooltip: "The AI Flow utilizes a hybrid approach: 1) Document Classification to identify forms, 2) Multi-modal Extraction (Vision + Text) using Qwen2.5-VL to capture layout and semantics, and 3) Deterministic Validation against business rules. The 'Confidence Math' follows a weighted formula: 45% Evidence Quality + 25% Model Agreement + 20% Constraint Satisfaction + 10% Cross-document Consistency, ensuring reliable and auditable results.",
   beneficiaryShareExplanation: "Single beneficiary designated to receive 100% of the policy benefits as specified in the application form."
 };
 
@@ -174,6 +176,7 @@ export const mockUnderwritingDecision = {
   reasonCode: "UW001",
   autoDecision: true,
   processingTime: "2.3 seconds",
+  aiFlowMathTooltip: "The Underwriting AI Flow executes a multi-stage risk assessment: 1) Deterministic Rule Validation (checking age, product, territory), 2) Financial Health Scoring (income-to-sum-assured ratios), 3) Medical NLP Analysis (identifying pre-existing conditions), and 4) Final Risk Rating Assignment. The logic is processed locally using a high-performance rules engine combined with a risk scoring model calibrated on historical actuarial data.",
   rulesApplied: [
     {
       ruleId: "AGE_001",
@@ -275,6 +278,7 @@ export const mockUnhappyUnderwritingDecision = {
   reasonCode: "UW_DECLINE_001",
   autoDecision: true,
   processingTime: "3.1 seconds",
+  aiFlowMathTooltip: "The Underwriting AI Flow executes a multi-stage risk assessment: 1) Deterministic Rule Validation (checking age, product, territory), 2) Financial Health Scoring (income-to-sum-assured ratios), 3) Medical NLP Analysis (identifying pre-existing conditions), and 4) Final Risk Rating Assignment. The logic is processed locally using a high-performance rules engine combined with a risk scoring model calibrated on historical actuarial data.",
   rulesApplied: [
     {
       ruleId: "AGE_001",

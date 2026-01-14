@@ -15,15 +15,49 @@ const Tooltip = ({ content, children, showIcon = true }: TooltipProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isVisible && containerRef.current) {
+    if (isVisible && containerRef.current && tooltipRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Vertical position
       const spaceAbove = rect.top;
-      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceBelow = viewportHeight - rect.bottom;
       
-      if (spaceAbove < 120 && spaceBelow > spaceAbove) {
+      if (spaceAbove < 200 && spaceBelow > spaceAbove) {
         setPosition('bottom');
       } else {
         setPosition('top');
+      }
+
+      // Horizontal position adjustment to keep inside viewport
+      let leftOffset = rect.left + rect.width / 2;
+      let translateX = -50;
+
+      const halfWidth = tooltipRect.width / 2;
+      
+      // If going off left
+      if (leftOffset - halfWidth < 20) {
+        const diff = 20 - (leftOffset - halfWidth);
+        translateX = -50 + (diff / tooltipRect.width) * 100;
+      } 
+      // If going off right
+      else if (leftOffset + halfWidth > viewportWidth - 20) {
+        const diff = (leftOffset + halfWidth) - (viewportWidth - 20);
+        translateX = -50 - (diff / tooltipRect.width) * 100;
+      }
+
+      tooltipRef.current.style.transform = `translateX(${translateX}%)`;
+      
+      // Position the arrow correctly to point at the trigger
+      const arrow = tooltipRef.current.querySelector('.tooltip-arrow') as HTMLDivElement;
+      if (arrow) {
+        // The arrow should be centered relative to the trigger
+        // Current tooltip center is at 'leftOffset'
+        // Percentage from left of tooltip where the trigger center is
+        const arrowLeft = 50 - (translateX + 50);
+        arrow.style.left = `${arrowLeft}%`;
       }
     }
   }, [isVisible]);
@@ -43,17 +77,26 @@ const Tooltip = ({ content, children, showIcon = true }: TooltipProps) => {
       {isVisible && (
         <div
           ref={tooltipRef}
-          className={`absolute z-50 w-72 p-3 text-sm bg-gray-900 text-white rounded-lg shadow-xl ${
+          className={`absolute z-[9999] w-80 max-w-[calc(100vw-40px)] p-4 text-sm bg-gray-900 text-white rounded-lg shadow-2xl leading-relaxed transition-opacity duration-200 ${
             position === 'top' 
-              ? 'bottom-full mb-2' 
-              : 'top-full mt-2'
-          } left-1/2 transform -translate-x-1/2`}
+              ? 'bottom-full mb-3' 
+              : 'top-full mt-3'
+          }`}
+          style={{ 
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
         >
-          <div className={`absolute left-1/2 transform -translate-x-1/2 ${
+          {/* Arrow */}
+          <div className={`tooltip-arrow absolute transform rotate-45 w-2 h-2 bg-gray-900 ${
             position === 'top'
-              ? 'bottom-0 translate-y-1/2 rotate-45'
-              : 'top-0 -translate-y-1/2 rotate-45'
-          } w-2 h-2 bg-gray-900`} />
+              ? 'bottom-[-4px]'
+              : 'top-[-4px]'
+          }`} 
+          style={{ 
+            left: '50%',
+            marginLeft: '-4px'
+          }} />
           <p className="relative z-10">{content}</p>
         </div>
       )}

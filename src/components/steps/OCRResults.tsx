@@ -22,9 +22,14 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               OCR Processing Results
             </h2>
-            <p className="text-gray-600">
-              Data extracted and validated from application documents
-            </p>
+            <div className="flex items-center space-x-2">
+              <p className="text-gray-600">
+                Data extracted and validated from application documents
+              </p>
+              <Tooltip content={ocrData.aiFlowMathTooltip} showIcon={true}>
+                <span className="text-xs text-blue-600 font-medium cursor-help hover:underline">How AI works</span>
+              </Tooltip>
+            </div>
           </div>
           <div className="flex items-center space-x-4">
             {/* Case Type Indicator */}
@@ -45,8 +50,8 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
             </div>
             
             {/* Confidence Score with Tooltip */}
-            <Tooltip content={ocrData.confidenceExplanation}>
-              <div className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
+            <Tooltip content={ocrData.confidenceExplanation} showIcon={false}>
+              <div className={`flex items-center space-x-2 px-4 py-2 rounded-full cursor-help ${
                 isUnhappyCase ? 'bg-yellow-100' : 'bg-green-100'
               }`}>
                 <Sparkles className={`w-5 h-5 ${isUnhappyCase ? 'text-yellow-600' : 'text-green-600'}`} />

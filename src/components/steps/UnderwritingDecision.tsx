@@ -46,9 +46,14 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Underwriting Decision
         </h2>
-        <p className="text-gray-600">
-          Automated risk assessment and policy decision
-        </p>
+        <div className="flex items-center space-x-2">
+          <p className="text-gray-600">
+            Automated risk assessment and policy decision
+          </p>
+          <Tooltip content={(decision as any).aiFlowMathTooltip} showIcon={true}>
+            <span className="text-xs text-blue-600 font-medium cursor-help hover:underline">How AI works</span>
+          </Tooltip>
+        </div>
       </div>
 
       {/* Decision Banner */}
@@ -116,7 +121,15 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
       {/* Overall Risk Score */}
       <div className="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Overall Risk Score</h3>
+          <div className="flex items-center space-x-2">
+            <h3 className="text-lg font-semibold text-gray-900">Overall Risk Score</h3>
+            <Tooltip 
+              content="The Overall Risk Score is a weighted aggregation of multiple factors: Personal Info (15%), Policy Parameters (20%), Occupational Risk (25%), and Health Declaration (40%). A score of 100 represents minimum risk, while lower scores indicate higher actuarial risk levels requiring closer review or higher premiums."
+              showIcon={true}
+            >
+              <span className="cursor-help"></span>
+            </Tooltip>
+          </div>
           <div className="flex items-center space-x-2">
             <TrendingUp className={`w-5 h-5 ${isDeclined ? 'text-red-600' : 'text-green-600'}`} />
             <span className={`text-sm font-medium ${isDeclined ? 'text-red-600' : 'text-green-600'}`}>

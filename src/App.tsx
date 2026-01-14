@@ -180,7 +180,7 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 pb-12">
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200">
           {renderStep()}
         </div>
       </main>
