@@ -177,6 +177,13 @@ export const mockUnderwritingDecision = {
   autoDecision: true,
   processingTime: "2.3 seconds",
   aiFlowMathTooltip: "The Underwriting AI Flow executes a multi-stage risk assessment: 1) Deterministic Rule Validation (checking age, product, territory), 2) Financial Health Scoring (income-to-sum-assured ratios), 3) Medical NLP Analysis (identifying pre-existing conditions), and 4) Final Risk Rating Assignment. The logic is processed locally using a high-performance rules engine combined with a risk scoring model calibrated on historical actuarial data.",
+  thinkingLog: [
+    { agent: "Orchestrator", message: "Initiating underwriting flow for case 53016828. Dispatching Medical and Financial agents." },
+    { agent: "MedicalAgent", message: "Health declaration analyzed. No critical illnesses found. Father's hypertension noted but categorized as low risk due to being 'controlled'." },
+    { agent: "FinancialAgent", message: "Income of ₱1.5M validated against Sum Assured of ₱5M. Ratio is 3.3x, well within the 10x safety threshold." },
+    { agent: "TerritoryAgent", message: "Location: Makati City. Risk level: Low. No territorial exclusions apply." },
+    { agent: "Orchestrator", message: "All agents report PASS. Consolidating results for final decision: APPROVED." }
+  ],
   rulesApplied: [
     {
       ruleId: "AGE_001",
@@ -279,6 +286,13 @@ export const mockUnhappyUnderwritingDecision = {
   autoDecision: true,
   processingTime: "3.1 seconds",
   aiFlowMathTooltip: "The Underwriting AI Flow executes a multi-stage risk assessment: 1) Deterministic Rule Validation (checking age, product, territory), 2) Financial Health Scoring (income-to-sum-assured ratios), 3) Medical NLP Analysis (identifying pre-existing conditions), and 4) Final Risk Rating Assignment. The logic is processed locally using a high-performance rules engine combined with a risk scoring model calibrated on historical actuarial data.",
+  thinkingLog: [
+    { agent: "Orchestrator", message: "Initiating underwriting flow for case 58155081. Dispatching Medical, Financial, and Occupation agents." },
+    { agent: "OccupationAgent", message: "CRITICAL: Applicant is a 'Mining Engineer'. This is a high-hazard category. Flagging for rejection or rating." },
+    { agent: "MedicalAgent", message: "CRITICAL: Multiple disclosures: Type 2 Diabetes, Hypertension, and a Cardiac event in 2023. Combined risk exceeds auto-approval limits." },
+    { agent: "FinancialAgent", message: "WARNING: Sum Assured ₱10M vs Income ₱800k. Ratio is 12.5x, exceeding the 10x limit. Financial over-insurance risk detected." },
+    { agent: "Orchestrator", message: "Multiple critical failures detected (Occupation, Medical, Financial). Decision: DECLINED. Proposing referral to non-standard products." }
+  ],
   rulesApplied: [
     {
       ruleId: "AGE_001",
@@ -408,9 +422,16 @@ export const mockAuditTrail = [
   },
   {
     timestamp: "2025-07-17T10:32:30Z",
-    action: "Underwriting Assessment Started",
-    user: "System: Auto-Underwriting Engine",
-    details: "Running 15 underwriting rules",
+    action: "Agentic Underwriting Started",
+    user: "System: Multi-Agent Orchestrator",
+    details: "Orchestrator dispatched Medical, Financial, and Occupation agents for collaborative assessment",
+    status: "completed"
+  },
+  {
+    timestamp: "2025-07-17T10:33:15Z",
+    action: "Agent Reflection & Consensus",
+    user: "System: Underwriting Agents",
+    details: "Agents completed cross-functional risk analysis and converged on 'Approved' status",
     status: "completed"
   },
   {
@@ -432,6 +453,13 @@ export const mockAuditTrail = [
     action: "Policy Issued",
     user: "System: Policy Administration",
     details: "Policy number: POL-53016828-2025",
+    status: "completed"
+  },
+  {
+    timestamp: "2025-07-17T10:37:00Z",
+    action: "Learning Loop: Data Captured",
+    user: "System: AI Training Pipeline",
+    details: "Case decisions and extracted fields hashed and added to the local RLHF training pool for weekly fine-tuning",
     status: "completed"
   }
 ];

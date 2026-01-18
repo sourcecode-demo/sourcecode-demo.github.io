@@ -162,6 +162,45 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
+      {/* Agentic Thinking Process */}
+      {'thinkingLog' in decision && (
+        <div className="mb-8">
+          <div className="flex items-center space-x-2 mb-4">
+            <Shield className="w-5 h-5 text-purple-600" />
+            <h3 className="text-lg font-semibold text-gray-900">Agentic Thinking Process (Explainable AI)</h3>
+          </div>
+          <div className="bg-purple-50 border border-purple-100 rounded-xl p-6 shadow-sm">
+            <div className="space-y-4">
+              {(decision as any).thinkingLog.map((log: any, index: number) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <div className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mt-0.5 ${
+                    log.agent === 'Orchestrator' ? 'bg-purple-600 text-white' : 
+                    log.agent === 'MedicalAgent' ? 'bg-blue-600 text-white' :
+                    log.agent === 'FinancialAgent' ? 'bg-green-600 text-white' :
+                    'bg-gray-600 text-white'
+                  }`}>
+                    {log.agent}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-700 italic leading-relaxed">
+                      "{log.message}"
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-purple-200 flex items-center justify-between">
+              <span className="text-xs text-purple-700 font-medium flex items-center">
+                <Clock className="w-3 h-3 mr-1" /> Multi-agent consensus achieved in {(decision as any).processingTime}
+              </span>
+              <span className="text-xs bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">
+                AGENTIC PATTERN
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Risk Rating Explanation */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
