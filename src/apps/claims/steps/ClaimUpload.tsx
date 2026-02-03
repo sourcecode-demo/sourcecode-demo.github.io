@@ -11,7 +11,6 @@ const standardFontDataUrl = (() => {
 })();
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-pdfjs.GlobalWorkerOptions.standardFontDataUrl = standardFontDataUrl;
 
 const PDFThumbnail = ({ path }: { path: string }) => {
   return (
@@ -68,7 +67,7 @@ const ClaimUpload = ({ onNext, isProcessing, documentsUploaded, onUpload }: Clai
   const viewerDocuments = claimDocuments.map(doc => ({
     name: doc.name,
     path: doc.path,
-    type: doc.previewType === 'image' ? 'image' : 'pdf'
+    type: (doc.previewType === 'image' ? 'image' : 'pdf') as 'image' | 'pdf'
   }));
 
   const openViewer = (index: number) => {

@@ -11,7 +11,6 @@ const standardFontDataUrl = (() => {
 })();
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-pdfjs.GlobalWorkerOptions.standardFontDataUrl = standardFontDataUrl;
 
 interface SubmissionIntakeProps {
   onNext: () => void;

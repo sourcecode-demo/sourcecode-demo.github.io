@@ -9,7 +9,6 @@ const standardFontDataUrl = (() => {
 })();
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-pdfjs.GlobalWorkerOptions.standardFontDataUrl = standardFontDataUrl;
 
 interface Document {
   name: string;
