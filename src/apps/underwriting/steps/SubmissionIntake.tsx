@@ -1,11 +1,17 @@
 import { FileText, Image, Upload, CheckCircle2, Clock, File, Check, AlertTriangle, Sparkles, User, Briefcase, Heart, DollarSign, Eye } from 'lucide-react';
 import { useState } from 'react';
-import { happyCaseFiles, unhappyCaseFiles, mockOCRResults, mockUnhappyOCRResults } from '../../data/mockData';
-import DocumentViewer from '../DocumentViewer';
+import { happyCaseFiles, unhappyCaseFiles, mockOCRResults, mockUnhappyOCRResults } from '../../../data/underwritingMock';
+import DocumentViewer from '../../../components/DocumentViewer';
 import { Document, Page, pdfjs } from 'react-pdf';
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+const standardFontDataUrl = (() => {
+  const url = new URL('pdfjs-dist/standard_fonts/', import.meta.url).toString();
+  return url.endsWith('/') ? url : `${url}/`;
+})();
+
+pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+pdfjs.GlobalWorkerOptions.standardFontDataUrl = standardFontDataUrl;
 
 interface SubmissionIntakeProps {
   onNext: () => void;
@@ -35,6 +41,7 @@ const PDFThumbnail = ({ file }: { file: any }) => {
     <div className="w-full h-full bg-white flex items-center justify-center overflow-hidden">
       <Document
         file={file.path}
+        options={{ standardFontDataUrl }}
         onLoadError={(error) => {
           console.error("PDF Load Error:", error);
           setLoadError(true);
@@ -46,10 +53,10 @@ const PDFThumbnail = ({ file }: { file: any }) => {
           </div>
         }
       >
-        <Page 
-          pageNumber={1} 
-          width={180} 
-          renderTextLayer={false} 
+        <Page
+          pageNumber={1}
+          width={180}
+          renderTextLayer={false}
           renderAnnotationLayer={false}
           className="shadow-sm"
         />
@@ -58,11 +65,11 @@ const PDFThumbnail = ({ file }: { file: any }) => {
   );
 };
 
-const SubmissionIntake = ({ 
-  onNext, 
-  isProcessing, 
-  processingStage, 
-  filesUploaded, 
+const SubmissionIntake = ({
+  onNext,
+  isProcessing,
+  processingStage,
+  filesUploaded,
   setFilesUploaded,
   isUnhappyCase,
   onToggleCase
@@ -74,7 +81,7 @@ const SubmissionIntake = ({
 
   const happyCaseData = mockOCRResults;
   const unhappyCaseData = mockUnhappyOCRResults;
-  
+
   const currentFiles = isUnhappyCase ? unhappyCaseFiles : happyCaseFiles;
   const currentData = isUnhappyCase ? unhappyCaseData : happyCaseData;
 
@@ -82,11 +89,11 @@ const SubmissionIntake = ({
     currentFiles.forEach((file, index) => {
       setTimeout(() => {
         setUploadingFiles(prev => [...prev, file.name]);
-        
+
         setTimeout(() => {
           setUploadingFiles(prev => prev.filter(f => f !== file.name));
           setUploadedFiles(prev => [...prev, file.name]);
-          
+
           if (index === currentFiles.length - 1) {
             setTimeout(() => setFilesUploaded(true), 500);
           }
@@ -130,7 +137,6 @@ const SubmissionIntake = ({
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Submission Intake
@@ -140,16 +146,14 @@ const SubmissionIntake = ({
         </p>
       </div>
 
-      {/* Demo Scenario Selector */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Demo Scenario</h3>
         <div className="grid grid-cols-2 gap-6">
-          {/* Happy Case Card */}
           <button
             onClick={() => onToggleCase(false)}
             className={`text-left rounded-xl border-2 transition-all overflow-hidden ${
-              !isUnhappyCase 
-                ? 'border-green-500 shadow-lg ring-2 ring-green-200' 
+              !isUnhappyCase
+                ? 'border-green-500 shadow-lg ring-2 ring-green-200'
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
             }`}
           >
@@ -173,7 +177,7 @@ const SubmissionIntake = ({
                 {!isUnhappyCase && <CheckCircle2 className="w-6 h-6 text-white" />}
               </div>
             </div>
-            
+
             <div className="p-4 bg-white">
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
@@ -223,12 +227,11 @@ const SubmissionIntake = ({
             </div>
           </button>
 
-          {/* Unhappy Case Card */}
           <button
             onClick={() => onToggleCase(true)}
             className={`text-left rounded-xl border-2 transition-all overflow-hidden ${
-              isUnhappyCase 
-                ? 'border-red-500 shadow-lg ring-2 ring-red-200' 
+              isUnhappyCase
+                ? 'border-red-500 shadow-lg ring-2 ring-red-200'
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
             }`}
           >
@@ -252,7 +255,7 @@ const SubmissionIntake = ({
                 {isUnhappyCase && <CheckCircle2 className="w-6 h-6 text-white" />}
               </div>
             </div>
-            
+
             <div className="p-4 bg-white">
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
@@ -304,7 +307,6 @@ const SubmissionIntake = ({
         </div>
       </div>
 
-      {/* Documents Preview Section */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Application Documents
@@ -312,16 +314,14 @@ const SubmissionIntake = ({
             ({isUnhappyCase ? 'Unhappy Case' : 'Happy Case'}: {currentData.personalInfo.fullName})
           </span>
         </h3>
-        
-        {/* Document Grid with Dynamic PDF Rendering */}
+
         <div className="grid grid-cols-3 gap-4">
           {currentFiles.map((file, index) => (
             <div
               key={`${file.path}-${index}`}
               className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group"
             >
-              {/* Preview Area - Dynamic Rendering */}
-              <div 
+              <div
                 className="relative h-56 cursor-pointer overflow-hidden border-b border-gray-100"
                 style={{ backgroundColor: '#ffffff' }}
                 onClick={() => openViewer(index)}
@@ -329,30 +329,28 @@ const SubmissionIntake = ({
                 {file.type === 'pdf' ? (
                   <PDFThumbnail file={file} />
                 ) : (
-                  <img 
-                    src={file.path} 
+                  <img
+                    src={file.path}
                     alt={file.name}
                     className="w-full h-full object-contain"
-                    style={{ 
+                    style={{
                       display: 'block',
                       margin: '0 auto'
                     }}
                     loading="eager"
                   />
                 )}
-                
-                {/* File Type Badge */}
+
                 <div className="absolute top-2 right-2 z-10">
                   <span className={`text-xs font-bold px-2 py-1 rounded shadow-md ${
-                    file.type === 'pdf' 
-                      ? 'bg-red-500 text-white' 
+                    file.type === 'pdf'
+                      ? 'bg-red-500 text-white'
                       : 'bg-emerald-500 text-white'
                   }`}>
                     {file.type === 'pdf' ? 'PDF' : 'IMAGE'}
                   </span>
                 </div>
-                
-                {/* Hover Overlay */}
+
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-20 hover:bg-black/40">
                   <div className="text-center">
                     <div className="bg-white rounded-full p-3 shadow-lg mx-auto inline-block">
@@ -362,8 +360,7 @@ const SubmissionIntake = ({
                   </div>
                 </div>
               </div>
-              
-              {/* File Info */}
+
               <div className="p-4">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
@@ -387,7 +384,6 @@ const SubmissionIntake = ({
         </div>
       </div>
 
-      {/* Upload Section */}
       {!filesUploaded ? (
         <div className="mb-8">
           <div className={`border-2 border-dashed rounded-xl p-8 text-center ${
@@ -400,13 +396,13 @@ const SubmissionIntake = ({
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to Process</h3>
             <p className="text-gray-600 mb-6">{currentFiles.length} documents ready for OCR processing</p>
-            
+
             <button
               onClick={handleDemoUpload}
               disabled={uploadingFiles.length > 0}
               className={`font-semibold py-3 px-8 rounded-lg transition-all duration-200 text-lg ${
-                isUnhappyCase 
-                  ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl' 
+                isUnhappyCase
+                  ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl'
                   : 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl'
               } disabled:opacity-50 disabled:cursor-not-allowed`}
             >

@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowLeft, User, Phone, Shield, Users, Heart, CheckCircle2, Sparkles, AlertTriangle } from 'lucide-react';
-import { mockOCRResults, mockUnhappyOCRResults } from '../../data/mockData';
-import Tooltip from '../Tooltip';
+import { mockOCRResults, mockUnhappyOCRResults } from '../../../data/underwritingMock';
+import Tooltip from '../../../components/Tooltip';
 
 interface OCRResultsProps {
   onNext: () => void;
@@ -12,10 +12,9 @@ interface OCRResultsProps {
 
 const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhappyCase = false }: OCRResultsProps) => {
   const ocrData = isUnhappyCase ? mockUnhappyOCRResults : mockOCRResults;
-  
+
   return (
     <div className="p-8 relative">
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -32,7 +31,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            {/* Case Type Indicator */}
             <div className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
               isUnhappyCase ? 'bg-red-100' : 'bg-green-100'
             }`}>
@@ -48,8 +46,7 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
                 </>
               )}
             </div>
-            
-            {/* Confidence Score with Tooltip */}
+
             <Tooltip content={ocrData.confidenceExplanation} showIcon={false}>
               <div className={`flex items-center space-x-2 px-4 py-2 rounded-full cursor-help ${
                 isUnhappyCase ? 'bg-yellow-100' : 'bg-green-100'
@@ -62,15 +59,14 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
             </Tooltip>
           </div>
         </div>
-        
-        {/* Unhappy Case Warning Banner */}
+
         {isUnhappyCase && (
           <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start space-x-3">
             <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-semibold text-red-800">Unhappy Case Demo</h4>
               <p className="text-sm text-red-600">
-                This demonstrates how the system handles cases that may not meet underwriting criteria. 
+                This demonstrates how the system handles cases that may not meet underwriting criteria.
                 The applicant has multiple risk factors that will be evaluated in the underwriting step.
               </p>
             </div>
@@ -78,7 +74,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         )}
       </div>
 
-      {/* Personal Information */}
       <div className="mb-6">
         <div className="flex items-center space-x-2 mb-4">
           <User className="w-5 h-5 text-blue-600" />
@@ -102,7 +97,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       </div>
 
-      {/* Contact Information */}
       <div className="mb-6">
         <div className="flex items-center space-x-2 mb-4">
           <Phone className="w-5 h-5 text-blue-600" />
@@ -126,7 +120,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       </div>
 
-      {/* Policy Details */}
       <div className="mb-6">
         <div className="flex items-center space-x-2 mb-4">
           <Shield className="w-5 h-5 text-blue-600" />
@@ -150,7 +143,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       </div>
 
-      {/* Beneficiaries */}
       <div className="mb-6">
         <div className="flex items-center space-x-2 mb-4">
           <Users className="w-5 h-5 text-blue-600" />
@@ -167,7 +159,7 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
             >
               <div className="flex items-center justify-between mb-3">
                 <p className="font-semibold text-gray-900">{beneficiary.name}</p>
-                <Tooltip 
+                <Tooltip
                   content={`This beneficiary receives ${beneficiary.share} of the policy benefits as designated by the applicant.`}
                   showIcon={false}
                 >
@@ -182,7 +174,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       </div>
 
-      {/* Health Declaration */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Heart className="w-5 h-5 text-blue-600" />
@@ -191,8 +182,8 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
           </h3>
         </div>
         <div className={`grid grid-cols-2 gap-4 rounded-lg p-6 border ${
-          isUnhappyCase 
-            ? 'bg-red-50 border-red-200' 
+          isUnhappyCase
+            ? 'bg-red-50 border-red-200'
             : 'bg-green-50 border-green-200'
         }`}>
           {Object.entries(ocrData.healthDeclaration).map(
@@ -202,8 +193,8 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
                   {key.replace(/([A-Z])/g, ' $1').trim()}
                 </p>
                 <p className={`text-sm font-semibold ${
-                  isUnhappyCase && value !== 'None' && !value.includes('None') 
-                    ? 'text-red-700' 
+                  isUnhappyCase && value !== 'None' && !value.includes('None')
+                    ? 'text-red-700'
                     : 'text-gray-900'
                 }`}>
                   {value}
@@ -227,7 +218,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       </div>
 
-      {/* Processing Overlay */}
       {isProcessing && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
@@ -250,7 +240,6 @@ const OCRResults = ({ onNext, onPrevious, isProcessing, processingStage, isUnhap
         </div>
       )}
 
-      {/* Action Buttons */}
       <div className="flex justify-between">
         <button onClick={onPrevious} className="btn-secondary flex items-center space-x-2">
           <ArrowLeft className="w-5 h-5" />

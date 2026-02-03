@@ -1,5 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, FileText, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+const standardFontDataUrl = (() => {
+  const url = new URL('pdfjs-dist/standard_fonts/', import.meta.url).toString();
+  return url.endsWith('/') ? url : `${url}/`;
+})();
+
+pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+pdfjs.GlobalWorkerOptions.standardFontDataUrl = standardFontDataUrl;
 
 interface Document {
   name: string;
@@ -18,11 +28,17 @@ const DocumentViewer = ({ documents, isOpen, onClose, initialIndex = 0 }: Docume
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pdfPage, setPdfPage] = useState(1);
+  const [pdfNumPages, setPdfNumPages] = useState(1);
+
+  useEffect(() => {
+    setPdfPage(1);
+    setPdfNumPages(1);
+  }, [currentIndex]);
 
   if (!isOpen) return null;
 
   const currentDoc = documents[currentIndex];
-
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : documents.length - 1));
     setZoom(100);
@@ -59,6 +75,27 @@ const DocumentViewer = ({ documents, isOpen, onClose, initialIndex = 0 }: Docume
           </div>
         </div>
         <div className="flex items-center space-x-4">
+          {currentDoc.type === 'pdf' && (
+            <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-1 text-sm">
+              <button
+                onClick={() => setPdfPage((prev) => Math.max(1, prev - 1))}
+                className="p-1 hover:bg-gray-700 rounded"
+                disabled={pdfPage <= 1}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-gray-300">
+                Page {pdfPage} / {pdfNumPages}
+              </span>
+              <button
+                onClick={() => setPdfPage((prev) => Math.min(pdfNumPages, prev + 1))}
+                className="p-1 hover:bg-gray-700 rounded"
+                disabled={pdfPage >= pdfNumPages}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
           {/* Zoom Controls */}
           <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-1">
             <button
@@ -144,12 +181,21 @@ const DocumentViewer = ({ documents, isOpen, onClose, initialIndex = 0 }: Docume
           }}
         >
           {currentDoc.type === 'pdf' ? (
-            <iframe
-              src={`${currentDoc.path}#toolbar=0&navpanes=0`}
-              className="w-full"
-              style={{ height: isFullscreen ? '100vh' : '80vh', minWidth: '800px' }}
-              title={currentDoc.name}
-            />
+            <div className="flex items-center justify-center bg-white">
+              <Document
+                file={currentDoc.path}
+                options={{ standardFontDataUrl }}
+                onLoadSuccess={({ numPages }) => setPdfNumPages(numPages)}
+                loading={<div className="p-8 text-gray-500">Loading PDF...</div>}
+              >
+                <Page
+                  pageNumber={pdfPage}
+                  width={isFullscreen ? 1100 : 900}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                />
+              </Document>
+            </div>
           ) : (
             <img
               src={currentDoc.path}

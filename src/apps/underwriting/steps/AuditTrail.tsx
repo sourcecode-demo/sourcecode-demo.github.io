@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowLeft, Clock, CheckCircle2, FileText, Cpu, Shield, UserCheck } from 'lucide-react';
-import { mockAuditTrail } from '../../data/mockData';
+import { mockAuditTrail } from '../../../data/underwritingMock';
 
 interface AuditTrailProps {
   onNext: () => void;
@@ -26,7 +26,6 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Audit Trail
@@ -36,7 +35,6 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
         </p>
       </div>
 
-      {/* Timeline Stats */}
       <div className="grid grid-cols-4 gap-4 mb-8">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border border-blue-200">
           <p className="text-sm text-blue-600 mb-1">Total Steps</p>
@@ -56,27 +54,22 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
         </div>
       </div>
 
-      {/* Timeline */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">Process Timeline</h3>
         <div className="relative">
-          {/* Timeline Line */}
           <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-green-500 to-green-600" />
 
-          {/* Timeline Items */}
           <div className="space-y-6">
             {mockAuditTrail.map((item, index) => {
               const { time, date } = formatTimestamp(item.timestamp);
               return (
                 <div key={index} className="relative flex items-start space-x-4">
-                  {/* Timeline Node */}
                   <div className="relative z-10 flex-shrink-0">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white shadow-lg ring-4 ring-blue-100">
                       {getActionIcon(item.action)}
                     </div>
                   </div>
 
-                  {/* Timeline Content */}
                   <div className="flex-1 bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="text-lg font-semibold text-gray-900">{item.action}</h4>
@@ -87,9 +80,9 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
                         </span>
                       </div>
                     </div>
-                    
+
                     <p className="text-sm text-gray-600 mb-3">{item.details}</p>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2 text-sm text-gray-500">
@@ -110,7 +103,6 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
         </div>
       </div>
 
-      {/* Process Summary */}
       <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-8">
         <h4 className="font-semibold text-green-900 mb-3">Process Summary</h4>
         <div className="grid grid-cols-3 gap-4">
@@ -129,7 +121,6 @@ const AuditTrail = ({ onNext, onPrevious, isProcessing }: AuditTrailProps) => {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-between">
         <button onClick={onPrevious} className="btn-secondary flex items-center space-x-2">
           <ArrowLeft className="w-5 h-5" />

@@ -1,6 +1,6 @@
 import { FileText, CheckCircle2, XCircle, Clock, TrendingUp, Users, MapPin, Target, Award, DollarSign, X } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { mockAnalytics, mockDistributionInsights } from '../data/mockData';
+import { mockAnalytics, mockDistributionInsights } from '../../data/underwritingMock';
 
 interface DashboardProps {
   onClose: () => void;
@@ -13,13 +13,12 @@ const Dashboard = ({ onClose }: DashboardProps) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
       <div className="min-h-screen py-8 px-4">
         <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-2xl">
-          {/* Header */}
           <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-4 rounded-t-xl flex items-center justify-between z-10">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Business Dashboard</h2>
               <p className="text-sm text-gray-500">Aggregate analytics and distribution insights</p>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -28,7 +27,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
           </div>
 
           <div className="p-8">
-            {/* Overview Cards */}
             <div className="grid grid-cols-4 gap-4 mb-8">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white shadow-lg">
                 <div className="flex items-center justify-between mb-2">
@@ -71,7 +69,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
               </div>
             </div>
 
-            {/* Monthly Trends */}
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Submission Trends</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -79,9 +76,9 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="month" stroke="#6b7280" />
                   <YAxis stroke="#6b7280" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#fff', 
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#fff',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px',
                       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
@@ -96,7 +93,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {/* Risk Distribution */}
               <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Risk Rating Distribution</h3>
                 <ResponsiveContainer width="100%" height={250}>
@@ -121,8 +117,8 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                 <div className="grid grid-cols-2 gap-3 mt-4">
                   {mockAnalytics.riskDistribution.map((item, index) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
+                      <div
+                        className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: COLORS[index % COLORS.length] }}
                       />
                       <span className="text-sm text-gray-600">
@@ -133,7 +129,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                 </div>
               </div>
 
-              {/* Product Mix */}
               <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Performance</h3>
                 <ResponsiveContainer width="100%" height={250}>
@@ -141,9 +136,9 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis dataKey="product" stroke="#6b7280" />
                     <YAxis stroke="#6b7280" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#fff', 
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#fff',
                         border: '1px solid #e5e7eb',
                         borderRadius: '8px'
                       }}
@@ -162,11 +157,9 @@ const Dashboard = ({ onClose }: DashboardProps) => {
               </div>
             </div>
 
-            {/* Distribution Section */}
             <div className="border-t border-gray-200 pt-8 mt-8">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Distribution Insights</h3>
-              
-              {/* Top Performing Agents */}
+
               <div className="mb-8">
                 <div className="flex items-center space-x-2 mb-4">
                   <Award className="w-5 h-5 text-yellow-500" />
@@ -217,8 +210,8 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                             <div className="flex items-center space-x-2">
                               <div className="flex-1 max-w-[100px]">
                                 <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                  <div 
-                                    className="h-full bg-green-500 rounded-full" 
+                                  <div
+                                    className="h-full bg-green-500 rounded-full"
                                     style={{ width: `${agent.approvalRate}%` }}
                                   />
                                 </div>
@@ -236,7 +229,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                 </div>
               </div>
 
-              {/* Channel Performance */}
               <div className="mb-8">
                 <div className="flex items-center space-x-2 mb-4">
                   <Users className="w-5 h-5 text-blue-600" />
@@ -258,8 +250,8 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                           <p className="text-xs text-gray-500 mb-1">Approval Rate</p>
                           <div className="flex items-center space-x-2">
                             <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div 
-                                className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full" 
+                              <div
+                                className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full"
                                 style={{ width: `${channel.approvalRate}%` }}
                               />
                             </div>
@@ -277,7 +269,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
               </div>
 
               <div className="grid grid-cols-2 gap-6">
-                {/* Territorial Distribution */}
                 <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                   <div className="flex items-center space-x-2 mb-4">
                     <MapPin className="w-5 h-5 text-purple-600" />
@@ -288,9 +279,9 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis type="number" stroke="#6b7280" />
                       <YAxis dataKey="region" type="category" stroke="#6b7280" width={100} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#fff', 
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#fff',
                           border: '1px solid #e5e7eb',
                           borderRadius: '8px'
                         }}
@@ -300,7 +291,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                   </ResponsiveContainer>
                 </div>
 
-                {/* Conversion Funnel */}
                 <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                   <div className="flex items-center space-x-2 mb-4">
                     <Target className="w-5 h-5 text-orange-600" />
@@ -314,7 +304,7 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                           <span className="text-sm font-bold text-gray-900">{stage.count}</span>
                         </div>
                         <div className="h-8 bg-gray-200 rounded overflow-hidden">
-                          <div 
+                          <div
                             className={`h-full flex items-center justify-end pr-3 text-white font-semibold text-sm ${
                               index === 0 ? 'bg-blue-500' :
                               index === 1 ? 'bg-blue-600' :
@@ -333,7 +323,6 @@ const Dashboard = ({ onClose }: DashboardProps) => {
                 </div>
               </div>
 
-              {/* Key Highlights */}
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mt-8">
                 <h4 className="text-lg font-semibold text-green-900 mb-4">Distribution Highlights</h4>
                 <div className="grid grid-cols-3 gap-4">

@@ -1,4 +1,3 @@
-// Demo file configurations - based on actual files in /data folder
 export const happyCaseFiles = [
   {
     name: "53016828 - DELA CRUZ, MIA (APP FORM).pdf",
@@ -47,7 +46,6 @@ export const unhappyCaseFiles = [
   }
 ];
 
-// Mock data for the demo - Happy Case: DELA CRUZ, MIA (IHP)
 export const mockCase = {
   caseId: "53016828",
   applicantName: "DELA CRUZ, MIA",
@@ -124,7 +122,6 @@ export const mockOCRResults = {
   beneficiaryShareExplanation: "Beneficiary shares are distributed equally between the two designated beneficiaries. Each beneficiary (Spouse and Child) receives 50% of the policy benefits. This is the applicant's specified preference as indicated in the application form."
 };
 
-// Unhappy case data - based on NON-GAE form: SANTOS, JOSE
 export const mockUnhappyOCRResults = {
   personalInfo: {
     fullName: "SANTOS, JOSE",
@@ -276,7 +273,6 @@ export const mockUnderwritingDecision = {
   }
 };
 
-// Unhappy case underwriting decision (Declined)
 export const mockUnhappyUnderwritingDecision = {
   decision: "Declined",
   riskRating: "High Risk",
@@ -464,7 +460,6 @@ export const mockAuditTrail = [
   }
 ];
 
-// Case-specific analytics (for single case view)
 export const mockCaseAnalytics = {
   dataSource: {
     channel: "Agency",
@@ -493,39 +488,39 @@ export const mockCaseAnalytics = {
     ]
   },
   keyIndicators: [
-    { 
-      label: "Risk Score", 
-      value: "89.5/100", 
+    {
+      label: "Risk Score",
+      value: "89.5/100",
       status: "excellent",
       description: "Above average risk score indicates low risk profile"
     },
-    { 
-      label: "Processing Time", 
-      value: "2.3 seconds", 
+    {
+      label: "Processing Time",
+      value: "2.3 seconds",
       status: "excellent",
       description: "Faster than 92% of similar cases"
     },
-    { 
-      label: "Automation Level", 
-      value: "Fully Automated", 
+    {
+      label: "Automation Level",
+      value: "Fully Automated",
       status: "excellent",
       description: "No manual intervention required"
     },
-    { 
-      label: "Decision Confidence", 
-      value: "High (98.5%)", 
+    {
+      label: "Decision Confidence",
+      value: "High (98.5%)",
       status: "excellent",
       description: "High confidence in underwriting decision"
     },
-    { 
-      label: "Document Quality", 
-      value: "Excellent", 
+    {
+      label: "Document Quality",
+      value: "Excellent",
       status: "excellent",
       description: "All documents clear and readable"
     },
-    { 
-      label: "Data Completeness", 
-      value: "100%", 
+    {
+      label: "Data Completeness",
+      value: "100%",
       status: "excellent",
       description: "All required fields captured"
     }
@@ -540,7 +535,6 @@ export const mockCaseAnalytics = {
   }
 };
 
-// Case-specific distribution (for single case view)
 export const mockCaseDistribution = {
   agent: {
     name: "Maria Santos",
@@ -576,39 +570,39 @@ export const mockCaseDistribution = {
     territoryRiskLevel: "Low"
   },
   distributionPath: [
-    { 
-      stage: "Lead Generated", 
-      date: "2025-07-10", 
+    {
+      stage: "Lead Generated",
+      date: "2025-07-10",
       source: "Referral from existing client",
       daysFromPrevious: 0
     },
-    { 
-      stage: "Initial Contact", 
-      date: "2025-07-12", 
+    {
+      stage: "Initial Contact",
+      date: "2025-07-12",
       source: "Phone call by Agent",
       daysFromPrevious: 2
     },
-    { 
-      stage: "Needs Analysis", 
-      date: "2025-07-14", 
+    {
+      stage: "Needs Analysis",
+      date: "2025-07-14",
       source: "In-person meeting",
       daysFromPrevious: 2
     },
-    { 
-      stage: "Proposal Presented", 
-      date: "2025-07-15", 
+    {
+      stage: "Proposal Presented",
+      date: "2025-07-15",
       source: "Email with Sales Illustration",
       daysFromPrevious: 1
     },
-    { 
-      stage: "Application Signed", 
-      date: "2025-07-16", 
+    {
+      stage: "Application Signed",
+      date: "2025-07-16",
       source: "Client office visit",
       daysFromPrevious: 1
     },
-    { 
-      stage: "Documents Submitted", 
-      date: "2025-07-17", 
+    {
+      stage: "Documents Submitted",
+      date: "2025-07-17",
       source: "Agency Portal Upload",
       daysFromPrevious: 1
     }
@@ -621,7 +615,6 @@ export const mockCaseDistribution = {
   }
 };
 
-// Aggregate analytics (for Dashboard)
 export const mockAnalytics = {
   overview: {
     totalSubmissions: 1247,
@@ -654,7 +647,6 @@ export const mockAnalytics = {
   ]
 };
 
-// Aggregate distribution insights (for Dashboard)
 export const mockDistributionInsights = {
   topPerformingAgents: [
     { name: "Maria Santos", code: "AGT-001", submissions: 89, approvalRate: 92.1, premium: "₱4.2M" },

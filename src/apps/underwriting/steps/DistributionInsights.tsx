@@ -1,5 +1,5 @@
 import { ArrowLeft, Users, MapPin, Award, TrendingUp, Clock, CheckCircle2, Building, Route, RefreshCw } from 'lucide-react';
-import { mockCaseDistribution } from '../../data/mockData';
+import { mockCaseDistribution } from '../../../data/underwritingMock';
 
 interface DistributionInsightsProps {
   onPrevious: () => void;
@@ -17,7 +17,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Case Distribution Details
@@ -27,7 +26,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </p>
       </div>
 
-      {/* Agent Information */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Users className="w-5 h-5 text-blue-600" />
@@ -35,7 +33,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
           <div className="flex items-start space-x-6">
-            {/* Agent Avatar */}
             <div className="flex-shrink-0">
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                 {mockCaseDistribution.agent.name.split(' ').map(n => n[0]).join('')}
@@ -46,8 +43,7 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
                 </span>
               </div>
             </div>
-            
-            {/* Agent Details */}
+
             <div className="flex-1">
               <div className="flex items-center justify-between mb-3">
                 <div>
@@ -56,7 +52,7 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
                 </div>
                 <Award className="w-8 h-8 text-yellow-500" />
               </div>
-              
+
               <div className="grid grid-cols-4 gap-4">
                 <div className="bg-white rounded-lg p-3">
                   <p className="text-xs text-gray-500 mb-1">Total Submissions</p>
@@ -75,7 +71,7 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
                   <p className="text-xl font-bold text-purple-600">{mockCaseDistribution.agent.performance.totalPremium}</p>
                 </div>
               </div>
-              
+
               <div className="mt-3 flex items-center space-x-2">
                 <span className="text-sm text-gray-500">Specializations:</span>
                 {mockCaseDistribution.agent.specializations.map((spec, index) => (
@@ -89,9 +85,7 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
       </div>
 
-      {/* Channel & Geographic Information */}
       <div className="grid grid-cols-2 gap-6 mb-8">
-        {/* Channel Information */}
         <div>
           <div className="flex items-center space-x-2 mb-4">
             <Building className="w-5 h-5 text-green-600" />
@@ -126,7 +120,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
           </div>
         </div>
 
-        {/* Geographic Information */}
         <div>
           <div className="flex items-center space-x-2 mb-4">
             <MapPin className="w-5 h-5 text-purple-600" />
@@ -166,7 +159,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
       </div>
 
-      {/* Distribution Path */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Route className="w-5 h-5 text-amber-600" />
@@ -174,17 +166,14 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-6">
           <div className="relative">
-            {/* Timeline Line */}
             <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 to-green-500" />
-            
-            {/* Timeline Items */}
+
             <div className="space-y-6">
               {mockCaseDistribution.distributionPath.map((step, index) => (
                 <div key={index} className="relative flex items-start space-x-4">
-                  {/* Timeline Node */}
                   <div className={`relative z-10 flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg ${
-                    index === mockCaseDistribution.distributionPath.length - 1 
-                      ? 'bg-gradient-to-br from-green-500 to-green-600' 
+                    index === mockCaseDistribution.distributionPath.length - 1
+                      ? 'bg-gradient-to-br from-green-500 to-green-600'
                       : 'bg-gradient-to-br from-amber-500 to-amber-600'
                   }`}>
                     {index === mockCaseDistribution.distributionPath.length - 1 ? (
@@ -193,8 +182,7 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
                       <span className="font-bold">{index + 1}</span>
                     )}
                   </div>
-                  
-                  {/* Content */}
+
                   <div className="flex-1 bg-white rounded-lg p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold text-gray-900">{step.stage}</h4>
@@ -215,7 +203,6 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
       </div>
 
-      {/* Case Timeline Summary */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Clock className="w-5 h-5 text-green-600" />
@@ -244,14 +231,13 @@ const DistributionInsights = ({ onPrevious, onRestart }: DistributionInsightsPro
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-between">
         <button onClick={onPrevious} className="btn-secondary flex items-center space-x-2">
           <ArrowLeft className="w-5 h-5" />
           <span>Previous</span>
         </button>
-        <button 
-          onClick={handleRestart} 
+        <button
+          onClick={handleRestart}
           className="btn-primary flex items-center space-x-2"
         >
           <RefreshCw className="w-5 h-5" />

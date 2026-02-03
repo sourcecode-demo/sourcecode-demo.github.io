@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowLeft, CheckCircle2, Shield, TrendingUp, Clock, Award, AlertCircle, XCircle, Info } from 'lucide-react';
-import { mockUnderwritingDecision, mockUnhappyUnderwritingDecision } from '../../data/mockData';
-import Tooltip from '../Tooltip';
+import { mockUnderwritingDecision, mockUnhappyUnderwritingDecision } from '../../../data/underwritingMock';
+import Tooltip from '../../../components/Tooltip';
 
 interface UnderwritingDecisionProps {
   onNext: () => void;
@@ -13,7 +13,7 @@ interface UnderwritingDecisionProps {
 const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase = false }: UnderwritingDecisionProps) => {
   const decision = isUnhappyCase ? mockUnhappyUnderwritingDecision : mockUnderwritingDecision;
   const isDeclined = decision.decision === "Declined";
-  
+
   const getRiskColor = (score: number) => {
     if (score >= 90) return 'text-green-600';
     if (score >= 75) return 'text-blue-600';
@@ -41,7 +41,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Underwriting Decision
@@ -56,10 +55,9 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Decision Banner */}
       <div className={`rounded-xl p-8 mb-8 text-white shadow-lg ${
-        isDeclined 
-          ? 'bg-gradient-to-r from-red-500 to-red-600' 
+        isDeclined
+          ? 'bg-gradient-to-r from-red-500 to-red-600'
           : 'bg-gradient-to-r from-green-500 to-green-600'
       }`}>
         <div className="flex items-center justify-between">
@@ -98,7 +96,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Decline Reasons (for unhappy case) */}
       {isDeclined && 'declineReasons' in decision && (
         <div className="mb-8 bg-red-50 border border-red-200 rounded-xl p-6">
           <div className="flex items-start space-x-3">
@@ -118,12 +115,11 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       )}
 
-      {/* Overall Risk Score */}
       <div className="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <h3 className="text-lg font-semibold text-gray-900">Overall Risk Score</h3>
-            <Tooltip 
+            <Tooltip
               content="The Overall Risk Score is a weighted aggregation of multiple factors: Personal Info (15%), Policy Parameters (20%), Occupational Risk (25%), and Health Declaration (40%). A score of 100 represents minimum risk, while lower scores indicate higher actuarial risk levels requiring closer review or higher premiums."
               showIcon={true}
             >
@@ -142,8 +138,8 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
             <div className="h-8 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className={`h-full flex items-center justify-end pr-4 ${
-                  decision.overallRiskScore >= 75 
-                    ? 'bg-gradient-to-r from-green-400 to-green-600' 
+                  decision.overallRiskScore >= 75
+                    ? 'bg-gradient-to-r from-green-400 to-green-600'
                     : decision.overallRiskScore >= 50
                     ? 'bg-gradient-to-r from-yellow-400 to-yellow-600'
                     : 'bg-gradient-to-r from-red-400 to-red-600'
@@ -162,7 +158,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Agentic Thinking Process */}
       {'thinkingLog' in decision && (
         <div className="mb-8">
           <div className="flex items-center space-x-2 mb-4">
@@ -174,7 +169,7 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
               {(decision as any).thinkingLog.map((log: any, index: number) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mt-0.5 ${
-                    log.agent === 'Orchestrator' ? 'bg-purple-600 text-white' : 
+                    log.agent === 'Orchestrator' ? 'bg-purple-600 text-white' :
                     log.agent === 'MedicalAgent' ? 'bg-blue-600 text-white' :
                     log.agent === 'FinancialAgent' ? 'bg-green-600 text-white' :
                     'bg-gray-600 text-white'
@@ -201,7 +196,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       )}
 
-      {/* Risk Rating Explanation */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Info className="w-5 h-5 text-blue-600" />
@@ -209,16 +203,15 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-6">
           <p className="text-gray-700 mb-4">{decision.riskRatingDetails.explanation}</p>
-          
-          {/* Risk Rating Scale */}
+
           <div className="mb-6">
             <h4 className="font-semibold text-gray-900 mb-3">Risk Rating Scale</h4>
             <div className="grid grid-cols-4 gap-3">
               {decision.riskRatingDetails.scale.map((level, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`p-3 rounded-lg border-2 ${
-                    level.level === decision.riskRating 
+                    level.level === decision.riskRating
                       ? level.level === 'Declined' || level.level === 'High Risk'
                         ? 'border-red-500 bg-red-50'
                         : level.level === 'Sub-standard'
@@ -241,16 +234,15 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
             </div>
           </div>
 
-          {/* Product Eligibility */}
           <div>
             <h4 className="font-semibold text-gray-900 mb-3">Product Eligibility</h4>
             <div className="grid grid-cols-2 gap-3">
               {decision.riskRatingDetails.productEligibility.map((product, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`p-4 rounded-lg border ${
-                    product.eligible 
-                      ? 'border-green-200 bg-green-50' 
+                    product.eligible
+                      ? 'border-green-200 bg-green-50'
                       : 'border-red-200 bg-red-50'
                   }`}
                 >
@@ -274,7 +266,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Risk Factors */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Risk Factor Analysis</h3>
         <div className="grid grid-cols-2 gap-4">
@@ -318,7 +309,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Underwriting Rules Applied */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Shield className="w-5 h-5 text-blue-600" />
@@ -331,8 +321,8 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
             <div
               key={index}
               className={`border rounded-lg p-4 hover:shadow-sm transition-colors ${
-                rule.result === "PASS" 
-                  ? 'bg-gray-50 border-gray-200 hover:bg-gray-100' 
+                rule.result === "PASS"
+                  ? 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                   : 'bg-red-50 border-red-200 hover:bg-red-100'
               }`}
             >
@@ -340,8 +330,8 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <span className={`text-xs font-mono px-2 py-1 rounded ${
-                      rule.result === "PASS" 
-                        ? 'bg-gray-200 text-gray-700' 
+                      rule.result === "PASS"
+                        ? 'bg-gray-200 text-gray-700'
                         : 'bg-red-200 text-red-700'
                     }`}>
                       {rule.ruleId}
@@ -362,10 +352,9 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Recommendation */}
       <div className={`mb-8 border rounded-lg p-6 ${
-        isDeclined 
-          ? 'bg-red-50 border-red-200' 
+        isDeclined
+          ? 'bg-red-50 border-red-200'
           : 'bg-blue-50 border-blue-200'
       }`}>
         <div className="flex items-start space-x-3">
@@ -382,20 +371,20 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
             }`}>
               <span>
                 {isDeclined ? 'Reviewed by' : 'Approved by'}: {
-                  isDeclined && 'reviewedBy' in decision 
-                    ? decision.reviewedBy 
-                    : 'approvedBy' in decision 
-                    ? decision.approvedBy 
+                  isDeclined && 'reviewedBy' in decision
+                    ? decision.reviewedBy
+                    : 'approvedBy' in decision
+                    ? decision.approvedBy
                     : 'System'
                 }
               </span>
               <span>•</span>
               <span>
                 Date: {new Date(
-                  isDeclined && 'reviewedDate' in decision 
-                    ? decision.reviewedDate 
-                    : 'approvedDate' in decision 
-                    ? decision.approvedDate 
+                  isDeclined && 'reviewedDate' in decision
+                    ? decision.reviewedDate
+                    : 'approvedDate' in decision
+                    ? decision.approvedDate
                     : new Date().toISOString()
                 ).toLocaleString()}
               </span>
@@ -404,7 +393,6 @@ const UnderwritingDecision = ({ onNext, onPrevious, isProcessing, isUnhappyCase 
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-between">
         <button onClick={onPrevious} className="btn-secondary flex items-center space-x-2">
           <ArrowLeft className="w-5 h-5" />

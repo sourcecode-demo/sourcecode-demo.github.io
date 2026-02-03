@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowLeft, TrendingUp, Database, Award, Clock, CheckCircle2, BarChart3, Target, Zap } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, ReferenceLine } from 'recharts';
-import { mockCaseAnalytics } from '../../data/mockData';
+import { mockCaseAnalytics } from '../../../data/underwritingMock';
 
 interface AnalyticsProps {
   onNext: () => void;
@@ -30,7 +30,6 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Case Analytics
@@ -40,7 +39,6 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
         </p>
       </div>
 
-      {/* Data Source Section */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Database className="w-5 h-5 text-blue-600" />
@@ -74,14 +72,12 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
         </div>
       </div>
 
-      {/* Scoring Comparison Section */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <BarChart3 className="w-5 h-5 text-green-600" />
           <h3 className="text-lg font-semibold text-gray-900">Scoring Comparison</h3>
         </div>
         <div className="grid grid-cols-3 gap-6">
-          {/* Score Comparison Chart */}
           <div className="col-span-2 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h4 className="font-medium text-gray-700 mb-4">Case Score vs. Benchmarks</h4>
             <ResponsiveContainer width="100%" height={200}>
@@ -89,9 +85,9 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis type="number" domain={[0, 100]} stroke="#6b7280" />
                 <YAxis dataKey="name" type="category" stroke="#6b7280" width={80} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#fff', 
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
                     border: '1px solid #e5e7eb',
                     borderRadius: '8px'
                   }}
@@ -100,31 +96,30 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
                 <Bar dataKey="score" radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
-            
-            {/* Score Trend */}
+
             <h4 className="font-medium text-gray-700 mt-6 mb-4">Average Score Trend (6 months)</h4>
             <ResponsiveContainer width="100%" height={150}>
               <LineChart data={mockCaseAnalytics.scoringComparison.scoreTrend}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="month" stroke="#6b7280" />
                 <YAxis domain={[70, 100]} stroke="#6b7280" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#fff', 
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
                     border: '1px solid #e5e7eb',
                     borderRadius: '8px'
                   }}
                 />
-                <ReferenceLine 
-                  y={mockCaseAnalytics.scoringComparison.caseScore} 
-                  stroke="#10b981" 
+                <ReferenceLine
+                  y={mockCaseAnalytics.scoringComparison.caseScore}
+                  stroke="#10b981"
                   strokeDasharray="5 5"
                   label={{ value: 'This Case', fill: '#10b981', fontSize: 12 }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="avgScore" 
-                  stroke="#6b7280" 
+                <Line
+                  type="monotone"
+                  dataKey="avgScore"
+                  stroke="#6b7280"
                   strokeWidth={2}
                   dot={{ fill: '#6b7280' }}
                   name="Avg Score"
@@ -132,8 +127,7 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          
-          {/* Ranking Cards */}
+
           <div className="space-y-4">
             <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white">
               <div className="flex items-center justify-between mb-2">
@@ -144,7 +138,7 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
               <p className="text-4xl font-bold">{mockCaseAnalytics.scoringComparison.percentile}th</p>
               <p className="text-green-100 text-sm mt-2">{mockCaseAnalytics.scoringComparison.rank}</p>
             </div>
-            
+
             <div className="bg-white border border-gray-200 rounded-lg p-5">
               <p className="text-sm text-gray-500 mb-1">Case Score</p>
               <p className="text-3xl font-bold text-green-600">
@@ -152,7 +146,7 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
               </p>
               <p className="text-xs text-gray-400 mt-1">out of 100</p>
             </div>
-            
+
             <div className="bg-white border border-gray-200 rounded-lg p-5">
               <p className="text-sm text-gray-500 mb-1">Cases Compared</p>
               <p className="text-3xl font-bold text-gray-900">
@@ -164,7 +158,6 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
         </div>
       </div>
 
-      {/* Key Indicators Section */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Target className="w-5 h-5 text-purple-600" />
@@ -186,7 +179,6 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
         </div>
       </div>
 
-      {/* Case Comparison Summary */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Zap className="w-5 h-5 text-amber-500" />
@@ -230,7 +222,6 @@ const Analytics = ({ onNext, onPrevious, isProcessing }: AnalyticsProps) => {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-between">
         <button onClick={onPrevious} className="btn-secondary flex items-center space-x-2">
           <ArrowLeft className="w-5 h-5" />
